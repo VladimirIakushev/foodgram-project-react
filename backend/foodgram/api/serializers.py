@@ -22,7 +22,7 @@ class CustomUserCreateSerializer(UserCreateSerializer):
         fields = (
             'email', 'id', 'username', 'first_name', 'last_name',
             'password'
-            )
+        )
 
 
 class CustomUserSerializer(UserSerializer):
@@ -33,7 +33,7 @@ class CustomUserSerializer(UserSerializer):
         fields = (
             'email', 'id', 'username', 'first_name', 'last_name',
             'is_subscribed'
-            )
+        )
 
     def get_is_subscribed(self, obj):
         user = self.context.get('request').user
@@ -50,7 +50,7 @@ class SubscribeSerializer(CustomUserSerializer):
         fields = (
             'email', 'id', 'username', 'first_name', 'last_name',
             'is_subscribed', 'recipes_count', 'recipes'
-            )
+        )
         read_only_fields = ('email', 'username')
 
     def validate(self, data):
@@ -107,7 +107,7 @@ class RecipeReadSerializer(ModelSerializer):
             'id', 'tags', 'author', 'ingredients', 'is_favorited',
             'is_in_shopping_cart', 'name', 'image', 'text',
             'cooking_time'
-            )
+        )
 
     def get_ingredients(self, obj):
         recipe = obj
@@ -152,7 +152,7 @@ class RecipeWriteSerializer(ModelSerializer):
         fields = (
             'id', 'tags', 'author', 'ingredients', 'name', 'image',
             'text', 'cooking_time'
-            )
+        )
 
     def validate_ingredients(self, value):
         ingredients = value

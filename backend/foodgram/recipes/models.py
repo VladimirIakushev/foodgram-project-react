@@ -67,9 +67,7 @@ class RecipeIngredient(models.Model):
         on_delete=models.CASCADE
     )
     amount = models.PositiveSmallIntegerField(
-        validators=[MinValueValidator(
-            1, message='Минимальное количество 1'
-            )]
+        validators=[MinValueValidator(1, message='Минимальное количество 1')]
     )
 
     def __str__(self):

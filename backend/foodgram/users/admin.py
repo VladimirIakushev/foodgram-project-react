@@ -8,7 +8,7 @@ from .models import Subscribe, User
 class UserAdmin(UserAdmin):
     list_display = (
         'username', 'id', 'email', 'first_name', 'last_name'
-        )
+    )
     list_filter = ('email', 'username')
 
 

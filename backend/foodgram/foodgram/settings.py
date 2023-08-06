@@ -119,4 +119,3 @@ AUTH_USER_MODEL = 'users.User'
 STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
-
