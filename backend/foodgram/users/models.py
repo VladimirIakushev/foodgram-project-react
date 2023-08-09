@@ -5,11 +5,11 @@ from django.db.models import UniqueConstraint
 
 class User(AbstractUser):
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = [
+    REQUIRED_FIELDS = (
         'username',
         'first_name',
         'last_name',
-    ]
+    )
     email = models.EmailField(
         'email address',
         max_length=254,
@@ -17,7 +17,7 @@ class User(AbstractUser):
     )
 
     class Meta:
-        ordering = ['id']
+        ordering = ('id', )
 
     def __str__(self):
         return self.username
@@ -36,8 +36,9 @@ class Subscribe(models.Model):
     )
 
     class Meta:
-        ordering = ['-id']
-        constraints = [
-            UniqueConstraint(fields=['user', 'author'],
-                             name='unique_subscription')
-        ]
+        ordering = ('-id', )
+        constraints = (UniqueConstraint(
+            fields=('user', 'author'),
+            name='unique_subscription'
+            ),
+        )

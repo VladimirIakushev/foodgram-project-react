@@ -1,6 +1,7 @@
 from django.contrib import admin
 from django.contrib.admin import display
 
+from .forms import TagModelForm
 from .models import (Favourite, Ingredient, RecipeIngredient, Recipe,
                      ShoppingCart, Tag)
 
@@ -24,7 +25,7 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
-    list_display = ('name', 'color', 'slug',)
+    form = TagModelForm
 
 
 @admin.register(ShoppingCart)

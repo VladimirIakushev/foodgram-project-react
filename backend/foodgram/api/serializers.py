@@ -9,7 +9,6 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
 from rest_framework.serializers import ModelSerializer
-
 from recipes.models import Ingredient, RecipeIngredient, Recipe, Tag
 from users.models import Subscribe
 
@@ -84,6 +83,12 @@ class SubscribeSerializer(CustomUserSerializer):
 class IngredientSerializer(ModelSerializer):
     class Meta:
         model = Ingredient
+        fields = '__all__'
+
+
+class DownloadSerializer(ModelSerializer):
+    class Meta:
+        model = Recipe
         fields = '__all__'
 
 
