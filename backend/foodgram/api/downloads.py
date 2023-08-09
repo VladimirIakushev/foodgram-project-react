@@ -32,7 +32,7 @@ def download_shopping_cart_code(self, request):
         20,
         800,
         f'Список покупок для: {user.get_full_name()}'
-        )
+    )
     pdf_file.setFont('ComicSans', 14)
     from_bottom = 750
     for ingredient in ingredients:
@@ -57,4 +57,4 @@ def download_shopping_cart_code(self, request):
         buffer,
         as_attachment=True,
         filename='shopping_list.pdf'
-        )
+    )
