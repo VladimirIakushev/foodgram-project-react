@@ -7,14 +7,20 @@ User = get_user_model()
 
 
 class Ingredient(models.Model):
-    name = models.CharField('Название ингредиента', max_length=200)
-    measurement_unit = models.CharField('Единица измерения', max_length=200)
+    name = models.CharField(
+        max_length=200,
+        verbose_name='Hазвание'
+    )
+    measurement_unit = models.CharField(
+        max_length=200,
+        verbose_name='Единица измерения'
+    )
 
     class Meta:
         ordering = ['name']
 
     def __str__(self):
-        return f'{self.name}, {self.measurement_unit}'
+        return f'{self.name}'  # {self.measurement_unit}'
 
 
 class Tag(models.Model):

@@ -30,3 +30,54 @@
 - GitHub Actions
 - Выделенный сервер Linux Ubuntu 22.04 с публичным IP
 
+#### Запуск проекта
+
+- Склонировать репозиторий и развернуть его 
+git clone git@github.com:VladimirIakushev/foodgram-project-react.git
+python -m venv venv
+pip install -r requirements.txt
+python manage.py migrate
+создать в папке backend/foodgram/foodgram файл .env по образцу .envexample
+
+- Запустить проект на удаленном сервере
+
+в файле nginx.conf установить свои параметры 'server_name ip доменное имя', например:
+server_name 0.0.0.0 example.com
+находясь локально в директории infra/, скопировать файлы docker-compose.production.yml и nginx.conf на удаленный сервер:
+scp docker-compose.production.yml <username>@<host>:/home/<username>/
+scp nginx.conf <username>@<host>:/home/<username>/
+
+запустить из рабочей директории:
+sudo docker compose -f docker-compose.production.yml up -d
+sudo docker compose -f docker-compose.production.yml ps
+
+проверить, что запущена сеть контейнеров:
+
+✔ Network foodgram-project-react_default       Created                                                                0.1s 
+ ✔ Container foodgram-project-react-db-1       Started                                                                5.7s 
+ ✔ Container foodgram-project-react-frontend-1 Started                                                                5.8s 
+ ✔ Container foodgram-project-react-backend-1  Started                                                                1.8s 
+ ✔ Container foodgram-project-react-nginx-1    Started                                                                2.0s 
+
+далее запустить по очереди команды из рабочей директории:
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py makemigrations
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py load_data
+sudo docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
+
+Проверить доступ по доменному имени через браузер
+
+#### Проект доступен по адресу
+
+http://158.160.29.235/
+http://foodgreat.hopto.org
+
+#### Логин и пароль суперюзера
+
+yc-user
+login le-2006@yandex.ru
+пароль Numenor07t
+
+#### Владимир Якушев
+https://t.me/Vidomir_Crni
+le-2006@yandex.ru
