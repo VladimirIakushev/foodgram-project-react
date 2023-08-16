@@ -151,5 +151,5 @@ media/
 
 .data/ingredients.csv
 .foodgram/data/
-db.sqlote3.bak
-ingredients.csv
+.db.sqlote3.bak
+.ingredients.csv
