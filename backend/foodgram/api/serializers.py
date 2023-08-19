@@ -149,8 +149,8 @@ class RecipeIngredientWriteSerializer(ModelSerializer):
             return int(value)
         except ValueError:
             raise MyError(
-                    'Количество ингредиента должно быть целым числом.'
-                )
+                'Количество ингредиента должно быть целым числом.'
+            )
 
     class Meta:
         model = RecipeIngredient
@@ -164,7 +164,8 @@ class RecipeWriteSerializer(ModelSerializer):
     ingredients = RecipeIngredientWriteSerializer(many=True)
     image = Base64ImageField()
     cooking_time = CharField(
-            required=False, allow_null=True, allow_blank=True)
+        required=False, allow_null=True, allow_blank=True
+    )
 
     def validate_cooking_time(self, value):
         if not value:
@@ -173,8 +174,8 @@ class RecipeWriteSerializer(ModelSerializer):
             return int(value)
         except ValueError:
             raise MyError(
-                    'Время приготовления должно быть целым числом.'
-                )
+                'Время приготовления должно быть целым числом.'
+            )
 
     class Meta:
         model = Recipe
