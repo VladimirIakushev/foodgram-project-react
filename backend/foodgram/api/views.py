@@ -15,6 +15,7 @@ from .serializers import (IngredientSerializer, RecipeReadSerializer,
                           TagSerializer)
 from recipes.models import (Favourite, Ingredient, Recipe,
                             ShoppingCart, Tag)
+from rest_framework.exceptions import ParseError
 
 
 class IngredientViewSet(ReadOnlyModelViewSet):
@@ -40,6 +41,7 @@ class RecipeViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+        raise ParseError('Введите целое, положительное число')
 
     def get_serializer_class(self):
         if self.request.method in SAFE_METHODS:

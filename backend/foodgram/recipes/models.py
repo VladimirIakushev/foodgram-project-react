@@ -2,6 +2,7 @@ from django.contrib.auth import get_user_model
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.db.models import UniqueConstraint
+from recipes.validators import CustomMinValueIntValidator
 
 User = get_user_model()
 
@@ -20,13 +21,12 @@ class Ingredient(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return f'{self.name}'  # {self.measurement_unit}'
+        return f'{self.name}'
 
 
 class Tag(models.Model):
     name = models.CharField('Имя тега', unique=True, max_length=200)
     color = models.CharField('Цвет тега', unique=True, max_length=7)
-    # ColorPicker добавлен через forms.py
     slug = models.SlugField('Слаг тега', unique=True, max_length=200)
 
     def __str__(self):
@@ -38,15 +38,15 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         related_name='recipes',
-        on_delete=models.SET_NULL,  # SET NULL?
+        on_delete=models.SET_NULL,
         null=True,
         verbose_name='Автор рецепта'
     )
     text = models.TextField('Рецепт')
     image = models.ImageField('Фото продукта', upload_to='media/')
     cooking_time = models.PositiveSmallIntegerField(
-        'Время приготовления',
-        validators=[MinValueValidator(1, message='Минимальное значение 1')]
+        validators=[MinValueValidator(1)],
+        verbose_name='Время приготовления'
     )
     ingredients = models.ManyToManyField(
         Ingredient,
@@ -80,8 +80,8 @@ class RecipeIngredient(models.Model):
         verbose_name='Ингредиент'
     )
     amount = models.PositiveSmallIntegerField(
-        'Количество',
-        validators=[MinValueValidator(1, message='Минимальное количество 1')]
+        validators=[CustomMinValueIntValidator(1)],
+        verbose_name='Количество'
     )
 
     def __str__(self):

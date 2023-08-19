@@ -8,9 +8,10 @@ from rest_framework import status
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import IntegerField, SerializerMethodField
 from rest_framework.relations import PrimaryKeyRelatedField
-from rest_framework.serializers import ModelSerializer
+from rest_framework.serializers import ModelSerializer, CharField
 from recipes.models import Ingredient, RecipeIngredient, Recipe, Tag
 from users.models import Subscribe
+from api.exeptions import MyError
 
 User = get_user_model()
 
@@ -139,6 +140,17 @@ class RecipeReadSerializer(ModelSerializer):
 
 class RecipeIngredientWriteSerializer(ModelSerializer):
     id = IntegerField(write_only=True)
+    amount = CharField(required=False, allow_null=True, allow_blank=True)
+
+    def validate_amount(self, value):
+        if not value:
+            return 0
+        try:
+            return int(value)
+        except ValueError:
+            raise MyError(
+                    'Количество ингредиента должно быть целым числом.'
+                )
 
     class Meta:
         model = RecipeIngredient
@@ -151,6 +163,18 @@ class RecipeWriteSerializer(ModelSerializer):
     author = CustomUserSerializer(read_only=True)
     ingredients = RecipeIngredientWriteSerializer(many=True)
     image = Base64ImageField()
+    cooking_time = CharField(
+            required=False, allow_null=True, allow_blank=True)
+
+    def validate_cooking_time(self, value):
+        if not value:
+            return 0
+        try:
+            return int(value)
+        except ValueError:
+            raise MyError(
+                    'Время приготовления должно быть целым числом.'
+                )
 
     class Meta:
         model = Recipe
@@ -162,20 +186,20 @@ class RecipeWriteSerializer(ModelSerializer):
     def validate_ingredients(self, value):
         ingredients = value
         if not ingredients:
-            raise ValidationError({
-                'ingredients': 'Добавьте ингредиент.'
-            })
+            raise MyError(
+                'Добавьте минимум 1 ингредиент.'
+            )
         ingredients_list = []
         for item in ingredients:
             ingredient = get_object_or_404(Ingredient, id=item['id'])
             if ingredient in ingredients_list:
-                raise ValidationError({
-                    'ingredients': 'Ингредиент уже есть.'
-                })
+                raise MyError(
+                    'Ингредиенты не могут повторяться.'
+                )
             if int(item['amount']) <= 0:
-                raise ValidationError({
-                    'amount': 'Добавьте количество ингредиента.'
-                })
+                raise MyError(
+                    'Добавьте количество ингредиента.'
+                )
             ingredients_list.append(ingredient)
         return value
 
